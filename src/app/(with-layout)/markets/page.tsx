@@ -4,6 +4,7 @@ import ChartComponent from 'src/components/Chart/ChartComponent';
 import OrderBook from 'src/components/OrderBook';
 import PageTransition from 'src/components/PageTransition';
 import LongShort from 'src/views/markets/LongShort';
+import Positions from 'src/views/markets/Positions';
 
 export default function MarketPage() {
   return (
@@ -20,6 +21,7 @@ export default function MarketPage() {
           <LongShort />
         </div>
       </div>
+      <Positions />
     </PageTransition>
   );
 }

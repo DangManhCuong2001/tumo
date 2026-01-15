@@ -39,7 +39,7 @@ export default function LongShort({ isDisplay = true }: Props) {
   return (
     <div
       className={`border flex flex-col ${
-        !isDisplay ? 'gap-1' : 'gap-3 border-[#958794] rounded-lg p-4'
+        !isDisplay ? 'gap-1' : 'gap-3 border-border rounded-lg p-4'
       }  bg-background text-foreground`}
     >
       {/* Long/Short Toggle */}
@@ -136,7 +136,8 @@ export default function LongShort({ isDisplay = true }: Props) {
           positionType === 'long' ? 'bg-[#00d4aa]' : 'bg-[#ff4d6a]'
         }`}
       >
-        {positionType.toUpperCase()}
+        {/* {positionType.toUpperCase()} */}
+        Deposit
       </button>
     </div>
   );

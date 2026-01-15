@@ -73,12 +73,12 @@ export default function SuiConnectButton() {
 
       {account && (
         <div className="flex items-center gap-4">
-          <div className="rounded-lg border px-3 py-1 ">
-            <span className="text-sm font-semibold ">{networkName}</span>
+          <div className="rounded-lg border px-2 py-1 h-fit">
+            <span className="text-sm font-medium ">{networkName}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-800">
+          <div className="h-fit flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-800">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">OCT Balance:</span>
-            <span className="text-sm font-bold text-gray-900 dark:text-white">{loading ? '...' : octBalance}</span>
+            <span className="text-sm font-medium text-gray-900 dark:text-white">{loading ? '...' : octBalance}</span>
           </div>
         </div>
       )}

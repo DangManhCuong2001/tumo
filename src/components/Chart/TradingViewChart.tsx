@@ -355,7 +355,7 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
   }, [candle?.down, candle?.up, data?.data, defaultOption, isLoading, isPending, line, text]);
 
   return (
-    <div className={`w-full h-full border ${!isDisplay ? '' : 'border-[#958794] rounded-lg p-2'} `}>
+    <div className={`w-full h-full border ${!isDisplay ? '' : 'border-border rounded-lg p-2'} `}>
       {isDisplay && (
         <>
           <div className="mb-3 pl-2 md:pl-6">

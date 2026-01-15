@@ -18,16 +18,16 @@ const navItems: NavItem[] = [
     href: '/markets',
     icon: <TrendingUp className="w-5 h-5" />,
   },
-  {
-    name: 'Launch',
-    href: '/launch',
-    icon: <Rocket className="w-5 h-5" />,
-  },
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: <LayoutDashboard className="w-5 h-5" />,
-  },
+  // {
+  //   name: 'Launch',
+  //   href: '/launch',
+  //   icon: <Rocket className="w-5 h-5" />,
+  // },
+  // {
+  //   name: 'Dashboard',
+  //   href: '/dashboard',
+  //   icon: <LayoutDashboard className="w-5 h-5" />,
+  // },
 ];
 
 export default function SideMenu() {

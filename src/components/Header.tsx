@@ -19,6 +19,7 @@ export default function Header() {
         bg-black
         left-0 right-0
         md:left-16 md:right-0
+        h-[57px]
         ${!isCollapsed ? 'md:left-64' : ''}
       `}
     >
