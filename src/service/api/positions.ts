@@ -23,6 +23,8 @@ export interface PositionPreviewData {
   max_loss: string;
   estimated_fees: string;
   total_cost: string;
+  available_balance: string;
+  collateral_in: string;
 }
 
 export interface PositionPreviewResponse {

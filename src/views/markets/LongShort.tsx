@@ -15,7 +15,7 @@ interface Props {
 export default function LongShort({ isDisplay = true }: Props) {
   const selectedPair = useSelectedPairValue();
   const [positionType, setPositionType] = useState<PositionType>('long');
-  const [amount, setAmount] = useState('0.00');
+  const [amount, setAmount] = useState('');
   const maxLeverage = selectedPair?.maxLeverage || 50;
   const [leverage, setLeverage] = useState(Math.min(13, maxLeverage));
   const [availableBalance] = useState(0.0);
@@ -100,7 +100,7 @@ export default function LongShort({ isDisplay = true }: Props) {
         value={amount}
         onChange={handleAmountChange}
         className="w-full px-4 py-3 bg-secondary/30 border border-[#958794]/30 rounded-lg text-foreground focus:outline-none focus:border-[#958794] transition-colors"
-        placeholder="Amount (USDC)"
+        placeholder="0.0"
       />
 
       {/* Leverage Slider */}
@@ -141,19 +141,19 @@ export default function LongShort({ isDisplay = true }: Props) {
 
       {/* Balance Information */}
       <div className="space-y-2">
-        {/* <div className="flex justify-between items-center text-sm">
+        <div className="flex justify-between items-center text-sm">
           <span className="text-tertiary-foreground">Available Balance</span>
           <span className="text-foreground font-medium">
-            {formatNumber(availableBalance, { fractionDigits: 2 })} USDC
+            {formatNumber(availableBalance, { fractionDigits: 2 })} {previewData?.collateral_in}
           </span>
-        </div> */}
+        </div>
         <div className="flex justify-between items-center text-sm">
-          <span className="text-tertiary-foreground">Collateral Required</span>
+          <span className="text-tertiary-foreground">Collateral In</span>
           <span className="text-foreground font-medium">
             {isLoadingPreview ? (
               <Skeleton className="h-4 w-20" />
             ) : previewData ? (
-              `${formatNumber(parseFloat(previewData.collateral_required), { fractionDigits: 2 })} USDC`
+              <>{previewData.collateral_in}</>
             ) : (
               '-'
             )}
@@ -187,7 +187,7 @@ export default function LongShort({ isDisplay = true }: Props) {
             )}
           </span>
         </div>
-        <div className="flex justify-between items-center text-sm">
+        {/* <div className="flex justify-between items-center text-sm">
           <span className="text-tertiary-foreground">Position Value</span>
           <span className="text-foreground font-medium">
             {isLoadingPreview ? (
@@ -198,8 +198,8 @@ export default function LongShort({ isDisplay = true }: Props) {
               '-'
             )}
           </span>
-        </div>
-        <div className="flex justify-between items-center text-sm">
+        </div> */}
+        {/* <div className="flex justify-between items-center text-sm">
           <span className="text-tertiary-foreground">Estimated Fees</span>
           <span className="text-foreground font-medium">
             {isLoadingPreview ? (
@@ -210,8 +210,8 @@ export default function LongShort({ isDisplay = true }: Props) {
               '-'
             )}
           </span>
-        </div>
-        <div className="flex justify-between items-center text-sm">
+        </div> */}
+        {/* <div className="flex justify-between items-center text-sm">
           <span className="text-tertiary-foreground">Total Cost</span>
           <span className="text-foreground font-medium">
             {isLoadingPreview ? (
@@ -222,7 +222,7 @@ export default function LongShort({ isDisplay = true }: Props) {
               '-'
             )}
           </span>
-        </div>
+        </div> */}
       </div>
 
       {/* Submit Button */}

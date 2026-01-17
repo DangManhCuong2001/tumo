@@ -49,6 +49,7 @@ export type TChartDataPoint = {
   low: string;
   close: string;
   volume: string;
+  is_finished?: boolean;
 };
 
 export type TChartApiResponse = {

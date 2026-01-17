@@ -92,7 +92,6 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
 
   // Fetch market stats
   const { data: marketStats } = useMarketStats(selectedPair?.id);
-  console.log(' marketStats: ', marketStats);
 
   const [isSocketOpen, setIsSocketOpen] = useState(false);
   const [tooltipData, setTooltipData] = useState<TTooltipData | null>(null);
@@ -102,6 +101,7 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const priceSocketRef = useRef<WebSocket | null>(null);
+  const lastCandleTimestampRef = useRef<UTCTimestamp | null>(null);
 
   const defaultOption: DeepPartial<ChartOptions> = useMemo(
     () => ({
@@ -239,17 +239,35 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
 
         // Check if it's a candle update
         if (data.type === 'candle' && data.candle_start_timestamp) {
-          const unixTimestamp = data.candle_start_timestamp as UTCTimestamp;
+          const newTimestamp = data.candle_start_timestamp as UTCTimestamp;
 
           // Update candle series
-          if (candleSeriesRef.current) {
-            candleSeriesRef.current.update({
-              time: unixTimestamp,
-              open: parseFloat(data.open),
-              high: parseFloat(data.high),
-              low: parseFloat(data.low),
-              close: parseFloat(data.close),
-            });
+          if (candleSeriesRef.current && lastCandleTimestampRef.current) {
+            // If is_finished is false, update the last candle using the saved timestamp
+            // If is_finished is true, create a new candle with the new timestamp
+            if (data.is_finished === false) {
+              // Update the existing last candle with the saved timestamp
+              const candleData = {
+                time: lastCandleTimestampRef.current,
+                open: parseFloat(data.open),
+                high: parseFloat(data.high),
+                low: parseFloat(data.low),
+                close: parseFloat(data.close),
+              };
+              candleSeriesRef.current.update(candleData);
+            } else if (data.is_finished === true) {
+              // Create a new candle with the new timestamp
+              const candleData = {
+                time: newTimestamp,
+                open: parseFloat(data.open),
+                high: parseFloat(data.high),
+                low: parseFloat(data.low),
+                close: parseFloat(data.close),
+              };
+              candleSeriesRef.current.update(candleData);
+              // Update the saved timestamp to the new candle
+              lastCandleTimestampRef.current = newTimestamp;
+            }
           }
         }
       } catch (error) {
@@ -301,18 +319,22 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
       downColor: candle?.down,
     });
     candleSeriesRef.current = candleSeries;
-    candleSeries.setData(
-      chartData.data.map(d => {
-        const unixTimestamp = Math.floor(new Date(d.timestamp).getTime() / 1000);
-        return {
-          time: unixTimestamp as UTCTimestamp,
-          open: parseFloat(d.open),
-          close: parseFloat(d.close),
-          high: parseFloat(d.high),
-          low: parseFloat(d.low),
-        };
-      }),
-    );
+    const mappedData = chartData.data.map(d => {
+      const unixTimestamp = Math.floor(new Date(d.timestamp).getTime() / 1000);
+      return {
+        time: unixTimestamp as UTCTimestamp,
+        open: parseFloat(d.open),
+        close: parseFloat(d.close),
+        high: parseFloat(d.high),
+        low: parseFloat(d.low),
+      };
+    });
+    candleSeries.setData(mappedData);
+
+    // Save the timestamp of the last candle (which should have is_finished = false)
+    if (mappedData.length > 0) {
+      lastCandleTimestampRef.current = mappedData[mappedData.length - 1].time;
+    }
     chart.subscribeCrosshairMove(param => {
       const v = param?.seriesData.get(candleSeries) as TTooltipData;
       setTooltipData(prev => {
@@ -410,7 +432,7 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
                       >
                         {marketStats?.price_24h_change &&
                           `${parseFloat(marketStats.price_24h_change) >= 0 ? '+' : ''}${formatNumber(
-                            BN(marketStats.price_24h_change).times(100),
+                            BN(marketStats.price_24h_change),
                             { fractionDigits: 2, suffix: '%' },
                           )}`}
                       </span>
