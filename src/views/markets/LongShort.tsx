@@ -5,6 +5,8 @@ import { formatNumber } from 'src/utils/format';
 import { useSelectedPairValue } from 'src/states/markets';
 import { usePositionPreview } from 'src/hooks/usePositionPreview';
 import { Skeleton } from 'src/components/ui/skeleton';
+import { CryptoIcon } from 'src/components/crypto-icons';
+import { useMarketStats } from 'src/hooks/markets/useMarketStats';
 
 type PositionType = 'long' | 'short';
 
@@ -44,6 +46,8 @@ export default function LongShort({ isDisplay = true }: Props) {
     size: debouncedAmount,
   });
 
+  const { data: marketStats } = useMarketStats(selectedPair?.id);
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Allow only numbers and decimal point
@@ -67,7 +71,7 @@ export default function LongShort({ isDisplay = true }: Props) {
   return (
     <div
       className={`border flex flex-col ${
-        !isDisplay ? 'gap-1' : 'gap-3 border-border rounded-lg p-4'
+        !isDisplay ? 'gap-1' : 'border-border rounded-lg p-4'
       }  bg-background text-foreground`}
     >
       {/* Long/Short Toggle */}
@@ -95,17 +99,39 @@ export default function LongShort({ isDisplay = true }: Props) {
       </div>
 
       {/* Amount Input */}
-      <input
-        type="text"
-        value={amount}
-        onChange={handleAmountChange}
-        className="w-full px-4 py-3 bg-secondary/30 border border-[#958794]/30 rounded-lg text-foreground focus:outline-none focus:border-[#958794] transition-colors"
-        placeholder="0.0"
-      />
+      <div className="rounded-xl bg-input p-2 mt-3 flex justify-between">
+        <div className="flex place-items-center gap-1">
+          <CryptoIcon name={marketStats?.collateral_in || ''} />
+          <p>{marketStats?.collateral_in}</p>
+        </div>
+        <div>
+          <div className="flex justify-end mb-0 place-items-center gap-1 ">
+            <span className="text-xs leading-2 text-secondary-foreground">
+              Balance:{' '}
+              <span className="text-xs">
+                {formatNumber(availableBalance, { fractionDigits: 2 })} {previewData?.collateral_in}
+              </span>
+            </span>
+            <p
+              onClick={() => setAmount(availableBalance.toString())}
+              className="text-[#3571ee] text-xs cursor-pointer leading-2"
+            >
+              Max
+            </p>
+          </div>
+          <input
+            type="text"
+            value={amount}
+            onChange={handleAmountChange}
+            className="text-right text-[20px] border-none w-full py-1 mt-0 bg-secondary/30 border border-[#958794]/30 rounded-lg text-foreground focus:outline-none focus:border-[#958794] transition-colors"
+            placeholder="0.0"
+          />
+        </div>
+      </div>
 
       {/* Leverage Slider */}
-      <div>
-        <div className="flex justify-between items-center mb-2">
+      <div className="mt-3">
+        <div className="flex justify-between items-center mb-1">
           <label className="text-sm text-tertiary-foreground">Leverage: {leverage}x</label>
         </div>
         <input
@@ -140,13 +166,13 @@ export default function LongShort({ isDisplay = true }: Props) {
       </div>
 
       {/* Balance Information */}
-      <div className="space-y-2">
-        <div className="flex justify-between items-center text-sm">
+      <div className="space-y-2 mt-3">
+        {/* <div className="flex justify-between items-center text-sm">
           <span className="text-tertiary-foreground">Available Balance</span>
           <span className="text-foreground font-medium">
             {formatNumber(availableBalance, { fractionDigits: 2 })} {previewData?.collateral_in}
           </span>
-        </div>
+        </div> */}
         <div className="flex justify-between items-center text-sm">
           <span className="text-tertiary-foreground">Collateral In</span>
           <span className="text-foreground font-medium">
@@ -230,7 +256,7 @@ export default function LongShort({ isDisplay = true }: Props) {
         onClick={handleSubmit}
         className={`w-full ${
           !isDisplay ? 'p-2' : 'p-3'
-        } rounded-lg font-bold text-white transition-all hover:opacity-90 ${
+        } rounded-lg font-bold text-white transition-all hover:opacity-90 mt-3 ${
           positionType === 'long' ? 'bg-[#00d4aa]' : 'bg-[#ff4d6a]'
         }`}
       >

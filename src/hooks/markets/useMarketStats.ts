@@ -14,6 +14,7 @@ export type MarketStats = {
   current_funding_rate: string;
   predicted_funding_rate: string;
   next_funding_time: string;
+  collateral_in: string;
 };
 
 type MarketStatsResponse = {

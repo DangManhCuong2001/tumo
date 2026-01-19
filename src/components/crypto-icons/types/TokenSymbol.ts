@@ -1,4 +1,7 @@
 // Token symbols enum
 export enum TokenSymbol {
-  // Example: BTC = "BTC"
+  BNB = "BNB",
+  BTC = "BTC",
+  ETH = "ETH",
+  USDC = "USDC"
 }

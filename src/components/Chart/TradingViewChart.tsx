@@ -360,7 +360,7 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
       {isDisplay && (
         <div className="flex justify-between px-2 flex-wrap">
           <div>
-            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2 flex-wrap">
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-3 flex-wrap">
               {/* Pair Selector */}
               <Popover>
                 <PopoverTrigger asChild>
@@ -371,8 +371,8 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
                     {isLoadingPairs
                       ? 'Loading...'
                       : cryptoPairs.length === 0
-                      ? 'No pairs available'
-                      : selectedPair?.symbol || 'Select pair'}
+                        ? 'No pairs available'
+                        : selectedPair?.symbol || 'Select pair'}
                     <svg className="w-4 h-4 text-[#958794]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
@@ -444,10 +444,10 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
               </div>
             </div>
 
-            <div className="mb-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 ">
+            <div className="mb-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 ">
               <div className="w-full md:w-auto overflow-x-auto">
                 {tooltipData && (
-                  <div className="flex items-center gap-2 md:gap-3 flex-wrap ">
+                  <div className="flex items-center gap-2 flex-wrap ">
                     {/* <p className="text-tertiary-foreground text-xs md:text-sm whitespace-nowrap">
                       {new Date(tooltipData.time * 1000).toLocaleDateString()}{' '}
                       {new Date(tooltipData.time * 1000).toLocaleTimeString('EN-us', {
@@ -456,33 +456,37 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
                         hour12: false,
                       })}
                     </p> */}
-                    <p
-                      className="border py-0.5 px-1.5 md:px-2 rounded-xl text-xs md:text-sm whitespace-nowrap"
-                      style={{ backgroundColor: '#161616' }}
-                    >
+                    <p className="text-xs whitespace-nowrap">
                       <span className="text-[#958794]">Open: </span>
-                      <span className="font-medium">{formatNumber(tooltipData.open, { fractionDigits: 2 })}</span>
+                      <span
+                        className={`font-medium ${tooltipData.close >= tooltipData.open ? 'text-green-500' : 'text-red-500'}`}
+                      >
+                        {formatNumber(tooltipData.open, { fractionDigits: 2 })}
+                      </span>
                     </p>
-                    <p
-                      className="border py-0.5 px-1.5 md:px-2 rounded-xl text-xs md:text-sm whitespace-nowrap"
-                      style={{ backgroundColor: '#161616' }}
-                    >
+                    <p className="text-xs whitespace-nowrap">
                       <span className="text-[#958794]">Close: </span>
-                      <span className="font-medium">{formatNumber(tooltipData.close, { fractionDigits: 2 })}</span>
+                      <span
+                        className={`font-medium ${tooltipData.close >= tooltipData.open ? 'text-green-500' : 'text-red-500'}`}
+                      >
+                        {formatNumber(tooltipData.close, { fractionDigits: 2 })}
+                      </span>
                     </p>
-                    <p
-                      className="border py-0.5 px-1.5 md:px-2 rounded-xl text-xs md:text-sm whitespace-nowrap"
-                      style={{ backgroundColor: '#161616' }}
-                    >
+                    <p className="text-xs whitespace-nowrap">
                       <span className="text-[#958794]">High: </span>
-                      <span className="font-medium">{formatNumber(tooltipData.high, { fractionDigits: 2 })}</span>
+                      <span
+                        className={`font-medium ${tooltipData.close >= tooltipData.open ? 'text-green-500' : 'text-red-500'}`}
+                      >
+                        {formatNumber(tooltipData.high, { fractionDigits: 2 })}
+                      </span>
                     </p>
-                    <p
-                      className="border py-0.5 px-1.5 md:px-2 rounded-xl text-xs md:text-sm whitespace-nowrap"
-                      style={{ backgroundColor: '#161616' }}
-                    >
+                    <p className="text-xs whitespace-nowrap">
                       <span className="text-[#958794]">Low: </span>
-                      <span className="font-medium">{formatNumber(tooltipData.low, { fractionDigits: 2 })}</span>
+                      <span
+                        className={`font-medium ${tooltipData.close >= tooltipData.open ? 'text-green-500' : 'text-red-500'}`}
+                      >
+                        {formatNumber(tooltipData.low, { fractionDigits: 2 })}
+                      </span>
                     </p>
                   </div>
                 )}
@@ -492,9 +496,10 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
           <div className="inline-flex rounded-[99px] p-1 mb-2 bg-secondary border-[0.5] border-t h-fit">
             {candleOptions?.map(option => {
               const active = option.title === candleTime.title;
+              console.log(option.title, active);
               return (
                 <div
-                  className={`cursor-pointer px-3 py-0.5 rounded-[99px] ${active ? 'bg-chip' : 'text-[#958794]'}`}
+                  className={`cursor-pointer px-2 boder ${active ? 'bg-chip' : 'text-[#958794]'}`}
                   onClick={() => setCandleTime(option)}
                   key={option.title}
                 >
