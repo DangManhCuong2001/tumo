@@ -360,10 +360,10 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
       {isDisplay && (
         <div className="flex justify-between px-2 flex-wrap">
           <div>
-            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-3 flex-wrap">
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-3 flex-wrap ">
               {/* Pair Selector */}
               <Popover>
-                <PopoverTrigger asChild>
+                <PopoverTrigger asChild className="max-w-[170px]">
                   <button
                     disabled={isLoadingPairs || cryptoPairs.length === 0}
                     className="bg-secondary border border-[#958794] rounded-lg px-4 py-2 text-sm md:text-base font-medium cursor-pointer hover:bg-opacity-80 transition-colors focus:outline-none focus:ring-2 focus:ring-[#958794] focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
@@ -400,31 +400,31 @@ export default function TradingViewChart({ isDisplay = true }: Props) {
                 {selectedPair ? (
                   <>
                     <div className="flex flex-col">
-                      <span className="text-[#958794] mb-0.5">Price</span>
-                      <span className="font-medium">
+                      <span className="text-[#958794] mb-0.5 text-xs md:text-sm">Price</span>
+                      <span className="font-medium text-xs md:text-sm">
                         {formatNumber(livePrice ?? selectedPair.price, { fractionDigits: 2 })}
                       </span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[#958794] mb-0.5">Mark Price</span>
-                      <span className="font-medium">
+                      <span className="text-[#958794] mb-0.5 text-xs md:text-sm">Mark Price</span>
+                      <span className="font-medium text-xs md:text-sm">
                         {marketStats?.mark_price
                           ? formatNumber(parseFloat(marketStats.mark_price), { fractionDigits: 2 })
                           : formatNumber(selectedPair.markPrice, { fractionDigits: 2 })}
                       </span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[#958794] mb-0.5">24H Volume</span>
-                      <span className="font-medium">
+                      <span className="text-[#958794] mb-0.5 text-xs md:text-sm">24H Volume</span>
+                      <span className="font-medium text-xs md:text-sm">
                         {marketStats?.volume_24h
                           ? formatNumber(parseFloat(marketStats.volume_24h), { fractionDigits: 2 })
                           : selectedPair.volume24h}
                       </span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[#958794] mb-0.5">24H Change</span>
+                      <span className="text-[#958794] mb-0.5 text-xs md:text-sm">24H Change</span>
                       <span
-                        className={`font-medium ${
+                        className={`font-medium text-xs md:text-sm${
                           marketStats?.price_24h_change && parseFloat(marketStats.price_24h_change) >= 0
                             ? 'text-green-500'
                             : 'text-red-500'
